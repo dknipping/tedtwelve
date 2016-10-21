@@ -19,27 +19,27 @@ import io.prometheus.client.exporter.MetricsServlet;
 @AutoConfigureBefore(MetricRepositoryAutoConfiguration.class)
 public class PrometheusAutoConfiguration {
 
-  @Bean
-  @ConditionalOnMissingBean
-  public CollectorRegistry metricRegistry() {
-    return new CollectorRegistry();
-  }
+	@Bean
+	@ConditionalOnMissingBean
+	public CollectorRegistry metricRegistry() {
+		return new CollectorRegistry();
+	}
 
-  @Bean
-  @ConditionalOnMissingBean({PrometheusMetricServices.class, CounterService.class, GaugeService.class})
-  public PrometheusMetricServices prometheusMetricServices(CollectorRegistry metricRegistry) {
-    return new PrometheusMetricServices(metricRegistry);
-  }
+	@Bean
+	@ConditionalOnMissingBean({ PrometheusMetricServices.class, CounterService.class, GaugeService.class })
+	public PrometheusMetricServices prometheusMetricServices(CollectorRegistry metricRegistry) {
+		return new PrometheusMetricServices(metricRegistry);
+	}
 
-  @Bean
-  public MetricReaderPublicMetrics prometheusPublicMetrics(CollectorRegistry metricRegistry) {
-    PrometheusRegistryMetricReader reader = new PrometheusRegistryMetricReader(metricRegistry);
-    return new MetricReaderPublicMetrics(reader);
-  }
+	@Bean
+	public MetricReaderPublicMetrics prometheusPublicMetrics(CollectorRegistry metricRegistry) {
+		PrometheusRegistryMetricReader reader = new PrometheusRegistryMetricReader(metricRegistry);
+		return new MetricReaderPublicMetrics(reader);
+	}
 
-  @Bean
-  public ServletRegistrationBean registerPrometheusExporterServlet(CollectorRegistry metricRegistry) {
-    return new ServletRegistrationBean(new MetricsServlet(metricRegistry), "/metrics");
-  }
+	@Bean
+	public ServletRegistrationBean registerPrometheusExporterServlet(CollectorRegistry metricRegistry) {
+		return new ServletRegistrationBean(new MetricsServlet(metricRegistry), "/metrics");
+	}
 
 }
